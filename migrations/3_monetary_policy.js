@@ -19,7 +19,7 @@ const DAY = 86400;
 
 async function migration(deployer, network, accounts) {
   let uniswap, uniswapRouter;
-  if (['dev'].includes(network)) {
+  if (['dev', 'heco_testnet'].includes(network)) {
     console.log('Deploying uniswap on dev network.');
     await deployer.deploy(UniswapV2Factory, accounts[0]);
     uniswap = await UniswapV2Factory.deployed();

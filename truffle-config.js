@@ -18,11 +18,11 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const fs = require('fs');
+const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
   /**
@@ -49,6 +49,14 @@ module.exports = {
       gasPrice: 50000000000,
       gas: 6721975, // Any network (default: none)
     },
+    heco_testnet: {
+      provider: () => new HDWalletProvider(mnemonic, 'https://http-testnet.hecochain.com'),
+      network_id: 256
+    },
+    heco_mainnet: {
+      provider: () => new HDWalletProvider(mnemonic, 'https://http-mainnet.hecochain.com'),
+      network_id: 128
+    }
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

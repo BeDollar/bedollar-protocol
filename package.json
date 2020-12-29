@@ -12,9 +12,8 @@
     "flatten": "truffle-flattener",
     "console:dev": "truffle console --network dev",
     "deploy:dev": "truffle migrate --reset --network dev",
-    "deploy:ropsten": "truffle migrate --network ropsten",
-    "deploy:rinkeby": "truffle migrate --network rinkeby",
-    "deploy:mainnet": "truffle migrate --network mainnet"
+    "deploy:heco_testnet": "truffle migrate --network heco_testnet",
+    "deploy:heco_mainnet": "truffle migrate --network heco_mainnet"
   },
   "devDependencies": {
     "@ethersproject/address": "^5.0.0-beta",

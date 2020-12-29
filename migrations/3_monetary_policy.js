@@ -1,9 +1,11 @@
 const contract = require('@truffle/contract');
 const { POOL_START_DATE } = require('./pools');
 const knownContracts = require('./known-contracts');
+const { artifacts } = require('hardhat');
 
 const Cash = artifacts.require('Cash');
 const Bond = artifacts.require('Bond');
+const SimpleERCFund = artifacts.require('SimpleERCFund');
 const Share = artifacts.require('Share');
 const IERC20 = artifacts.require('IERC20');
 const MockDai = artifacts.require('MockDai');
@@ -73,6 +75,9 @@ async function migration(deployer, network, accounts) {
     uniswap.address,
     cash.address,
     dai.address,
+    // _period in 0x3e233a85535d32De0FDeA8510D460c0Aef7fDFeC, likely is 1 hour(60min * 60sec)
+    3600,
+    POOL_START_DATE
   );
 
   let startTime = POOL_START_DATE;
@@ -87,6 +92,7 @@ async function migration(deployer, network, accounts) {
     Share.address,
     Oracle.address,
     Boardroom.address,
+    SimpleERCFund.address,
     startTime,
   );
 }

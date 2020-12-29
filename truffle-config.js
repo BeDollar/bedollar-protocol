@@ -51,11 +51,12 @@ module.exports = {
     },
     heco_testnet: {
       provider: () => new HDWalletProvider(mnemonic, 'https://http-testnet.hecochain.com'),
-      network_id: 256
+      network_id: 256,
+      gas: 8000000,
     },
     heco_mainnet: {
       provider: () => new HDWalletProvider(mnemonic, 'https://http-mainnet.hecochain.com'),
-      network_id: 128
+      gas: 8000000,
     }
     // Another network with more advanced options...
     // advanced: {

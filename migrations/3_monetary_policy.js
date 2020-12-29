@@ -55,12 +55,23 @@ async function migration(deployer, network, accounts) {
   // WARNING: msg.sender must hold enough DAI to add liquidity to BAC-DAI & BAS-DAI pools
   // otherwise transaction will revert
   console.log('Adding liquidity to pools');
-  await uniswapRouter.addLiquidity(
-    cash.address, dai.address, unit, unit, unit, unit, accounts[0], deadline(),
-  );
-  await uniswapRouter.addLiquidity(
-    share.address, dai.address, unit, unit, unit, unit, accounts[0],  deadline(),
-  );
+  const [DAI_BAC_PAIR, DAI_BAS_PAIR ] = await Promise.all([
+    uniswap.getPair(dai.address, cash.address),
+    uniswap.getPair(dai.address, share.address)
+  ])
+  if (DAI_BAC_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying DAI_BAC_PAIR');
+    await uniswapRouter.addLiquidity(
+      cash.address, dai.address, unit, unit, unit, unit, accounts[0], deadline(),
+    );
+  }
+
+  if (DAI_BAS_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying DAI_BAS_PAIR');
+    await uniswapRouter.addLiquidity(
+      share.address, dai.address, unit, unit, unit, unit, accounts[0],  deadline(),
+    );
+  }
 
   console.log(`DAI-BAC pair address: ${await uniswap.getPair(dai.address, cash.address)}`);
   console.log(`DAI-BAS pair address: ${await uniswap.getPair(dai.address, share.address)}`);

@@ -4,6 +4,7 @@
 // deployed first
 const Cash = artifacts.require('Cash')
 const Bond = artifacts.require('Bond')
+const SimpleERCFund = artifacts.require('SimpleERCFund');
 const Share = artifacts.require('Share')
 const MockDai = artifacts.require('MockDai');
 
@@ -21,6 +22,7 @@ async function deployToken(deployer, network, accounts) {
   await deployer.deploy(Cash);
   await deployer.deploy(Bond);
   await deployer.deploy(Share);
+  await deployer.deploy(SimpleERCFund)
 
   if (network !== 'mainnet') {
     const dai = await deployer.deploy(MockDai);

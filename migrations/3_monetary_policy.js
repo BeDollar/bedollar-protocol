@@ -1,7 +1,6 @@
 const contract = require('@truffle/contract');
 const { POOL_START_DATE } = require('./pools');
 const knownContracts = require('./known-contracts');
-const { artifacts } = require('hardhat');
 
 const Cash = artifacts.require('Cash');
 const Bond = artifacts.require('Bond');
@@ -90,7 +89,8 @@ async function migration(deployer, network, accounts) {
     cash.address,
     Bond.address,
     Share.address,
-    Oracle.address,
+    Oracle.address, // bond
+    Oracle.address, // seigniorage
     Boardroom.address,
     SimpleERCFund.address,
     startTime,

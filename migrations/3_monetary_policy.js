@@ -20,7 +20,7 @@ const DAY = 86400;
 
 async function migration(deployer, network, accounts) {
   let uniswap, uniswapRouter;
-  if (['dev', 'heco_testnet'].includes(network)) {
+  if (['dev'].includes(network)) {
     console.log('Deploying uniswap on dev network.');
     await deployer.deploy(UniswapV2Factory, accounts[0]);
     uniswap = await UniswapV2Factory.deployed();
@@ -80,6 +80,13 @@ async function migration(deployer, network, accounts) {
   await deployer.deploy(Boardroom, cash.address, share.address);
 
   // 2. Deploy oracle for the pair between bac and dai
+  console.log(
+    uniswap.address,
+    cash.address,
+    dai.address,
+    3600,
+    POOL_START_DATE
+  )
   await deployer.deploy(
     Oracle,
     uniswap.address,

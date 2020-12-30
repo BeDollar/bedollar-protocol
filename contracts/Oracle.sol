@@ -40,7 +40,7 @@ contract Oracle is Epoch {
         uint256 _startTime
     ) public Epoch(_period, _startTime, 0) {
         IUniswapV2Pair _pair = IUniswapV2Pair(
-            UniswapV2Library.pairFor(_factory, _tokenA, _tokenB)
+            IUniswapV2Factory(_factory).getPair(_tokenA, _tokenB)
         );
         pair = _pair;
         token0 = _pair.token0();

@@ -6,6 +6,7 @@ module.exports = {
     ropsten: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
     rinkeby: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
     bsc_mainnet: '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470',
+    bsc_testnet: '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470',
     heco_mainnet: '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470',
     heco_testnet: '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470',
   },
@@ -14,11 +15,13 @@ module.exports = {
     ropsten: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
     rinkeby: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
     bsc_mainnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
+    bsc_testnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
     heco_mainnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
     heco_testnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
   },
   DAI: {
     mainnet: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    bsc_testnet: '0xEC5dCb5Dbf4B114C9d0F65BcCAb49EC54F6A0867'
   },
   SUSD: {
     mainnet: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',

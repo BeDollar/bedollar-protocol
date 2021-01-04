@@ -32,7 +32,7 @@ async function migration(deployer, network, accounts) {
     uniswapRouter = await UniswapV2Router02.at(knownContracts.UniswapV2Router02[network]);
   }
 
-  const dai = network === 'mainnet'
+  const dai = knownContracts.DAI[network]
     ? await IERC20.at(knownContracts.DAI[network])
     : await MockDai.deployed();
 

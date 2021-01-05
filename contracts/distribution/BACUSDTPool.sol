@@ -171,7 +171,7 @@ contract BACUSDTPool is USDTWrapper, IRewardDistributionRecipient {
         require(amount > 0, 'BACUSDTPool: Cannot stake 0');
         uint256 newDeposit = deposits[msg.sender].add(amount);
         require(
-            newDeposit <= 20000e6,
+            newDeposit <= 20000e18, // @XXX: BSC peg is 18
             'BACUSDTPool: deposit amount exceeds maximum 20000'
         );
         deposits[msg.sender] = newDeposit;

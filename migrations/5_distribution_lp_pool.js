@@ -21,6 +21,7 @@ module.exports = async (deployer, network, accounts) => {
 
   const oracle = await Oracle.deployed();
 
+  // @XXX: remember to switch codehash for Oracle if you switch swap/network
   const dai_bac_lpt = await oracle.pairFor(uniswapFactory.address, Cash.address, dai.address);
   const dai_bas_lpt = await oracle.pairFor(uniswapFactory.address, Share.address, dai.address);
 

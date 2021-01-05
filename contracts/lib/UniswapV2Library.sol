@@ -33,7 +33,11 @@ library UniswapV2Library {
                         hex'ff',
                         factory,
                         keccak256(abi.encodePacked(token0, token1)),
-                        hex'96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f' // init code hash
+                        // @XXX: replace CODEHASH when switching factory
+                        // hex'96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f' // original uniswap init code hash
+                        hex'9b025805045f6da539a4926f67307a9b0ab5aaccc42d3f14aaea0776a5b727ac' //  bsc unisave init code hash
+                        // hex'7b9686f044376bf1a04de2e9f1dbb6c9a4fe516f7cbd89b68be801982b62f913' //  heco unisave init code hash
+                        // hex'f523ab2e058386ecc391c92c3cda3906b9c8a50c2cca82c4f12ea030fee83af1' //  matic unisave init code hash
                     )
                 )
             )
@@ -47,10 +51,8 @@ library UniswapV2Library {
         address tokenB
     ) internal view returns (uint256 reserveA, uint256 reserveB) {
         (address token0, ) = sortTokens(tokenA, tokenB);
-        (uint256 reserve0, uint256 reserve1, ) = IUniswapV2Pair(
-            pairFor(factory, tokenA, tokenB)
-        )
-            .getReserves();
+        (uint256 reserve0, uint256 reserve1, ) =
+            IUniswapV2Pair(pairFor(factory, tokenA, tokenB)).getReserves();
         (reserveA, reserveB) = tokenA == token0
             ? (reserve0, reserve1)
             : (reserve1, reserve0);
@@ -113,11 +115,8 @@ library UniswapV2Library {
         amounts = new uint256[](path.length);
         amounts[0] = amountIn;
         for (uint256 i; i < path.length - 1; i++) {
-            (uint256 reserveIn, uint256 reserveOut) = getReserves(
-                factory,
-                path[i],
-                path[i + 1]
-            );
+            (uint256 reserveIn, uint256 reserveOut) =
+                getReserves(factory, path[i], path[i + 1]);
             amounts[i + 1] = getAmountOut(amounts[i], reserveIn, reserveOut);
         }
     }
@@ -132,11 +131,8 @@ library UniswapV2Library {
         amounts = new uint256[](path.length);
         amounts[amounts.length - 1] = amountOut;
         for (uint256 i = path.length - 1; i > 0; i--) {
-            (uint256 reserveIn, uint256 reserveOut) = getReserves(
-                factory,
-                path[i - 1],
-                path[i]
-            );
+            (uint256 reserveIn, uint256 reserveOut) =
+                getReserves(factory, path[i - 1], path[i]);
             amounts[i - 1] = getAmountIn(amounts[i], reserveIn, reserveOut);
         }
     }

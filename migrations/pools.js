@@ -7,10 +7,10 @@ const POOL_START_DATE = Date.parse('2020-12-30T00:00:00Z') / 1000;
 
 const bacPools = [
   { contractName: 'BACDAIPool', token: 'DAI' },
-  { contractName: 'BACSUSDPool', token: 'SUSD' },
+  // { contractName: 'BACSUSDPool', token: 'SUSD' },
   { contractName: 'BACUSDCPool', token: 'USDC' },
   { contractName: 'BACUSDTPool', token: 'USDT' },
-  { contractName: 'BACyCRVPool', token: 'yCRV' },
+  // { contractName: 'BACyCRVPool', token: 'yCRV' },
 ];
 
 const basPools = {

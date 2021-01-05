@@ -28,9 +28,11 @@ module.exports = {
   },
   USDC: {
     mainnet: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    bsc_testnet: '0x64544969ed7ebf5f083679233325356ebe738930'
   },
   USDT: {
     mainnet: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    bsc_testnet: '0x337610d27c682e347c9cd60bd4b3b107c9d34ddd'
   },
   yCRV: {
     mainnet: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',

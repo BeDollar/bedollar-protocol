@@ -1,4 +1,4 @@
-const { bacPools, INITIAL_BAC_FOR_POOLS } = require('./pools');
+const { bacPools, INITIAL_YSD_FOR_POOLS } = require('./pools');
 
 // Pools
 // deployed first
@@ -9,7 +9,7 @@ const InitialCashDistributor = artifacts.require('InitialCashDistributor');
 
 module.exports = async (deployer, network, accounts) => {
   const unit = web3.utils.toBN(10 ** 18);
-  const initialCashAmount = unit.muln(INITIAL_BAC_FOR_POOLS).toString();
+  const initialCashAmount = unit.muln(INITIAL_YSD_FOR_POOLS).toString();
 
   const cash = await Cash.deployed();
   const pools = bacPools.map(({contractName}) => artifacts.require(contractName));
@@ -29,7 +29,7 @@ module.exports = async (deployer, network, accounts) => {
   }
 
   await cash.mint(distributor.address, initialCashAmount);
-  console.log(`Deposited ${INITIAL_BAC_FOR_POOLS} BAC to InitialCashDistributor.`);
+  console.log(`Deposited ${INITIAL_YSD_FOR_POOLS} YSD to InitialCashDistributor.`);
 
   await distributor.distribute();
 }

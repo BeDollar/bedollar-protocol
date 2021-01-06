@@ -36,8 +36,8 @@ async function migration(deployer, network, accounts) {
     ? await IERC20.at(knownContracts.DAI[network])
     : await MockDai.deployed();
 
-  // 2. provide liquidity to BAC-DAI and BAS-DAI pair
-  // if you don't provide liquidity to BAC-DAI and BAS-DAI pair after step 1 and before step 3,
+  // 2. provide liquidity to YSD-DAI and YSS-DAI pair
+  // if you don't provide liquidity to YSD-DAI and YSS-DAI pair after step 1 and before step 3,
   //  creating Oracle will fail with NO_RESERVES error.
   const unit = web3.utils.toBN(10 ** 18).toString();
   const max = web3.utils.toBN(10 ** 18).muln(10000).toString();
@@ -52,29 +52,29 @@ async function migration(deployer, network, accounts) {
     approveIfNot(dai, accounts[0], uniswapRouter.address, max),
   ]);
 
-  // WARNING: msg.sender must hold enough DAI to add liquidity to BAC-DAI & BAS-DAI pools
+  // WARNING: msg.sender must hold enough DAI to add liquidity to YSD-DAI & YSS-DAI pools
   // otherwise transaction will revert
   console.log('Adding liquidity to pools');
-  const [DAI_BAC_PAIR, DAI_BAS_PAIR ] = await Promise.all([
+  const [DAI_YSD_PAIR, DAI_YSS_PAIR ] = await Promise.all([
     uniswap.getPair(dai.address, cash.address),
     uniswap.getPair(dai.address, share.address)
   ])
-  if (DAI_BAC_PAIR === '0x0000000000000000000000000000000000000000') {
-    console.log('Deploying DAI_BAC_PAIR');
+  if (DAI_YSD_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying DAI_YSD_PAIR');
     await uniswapRouter.addLiquidity(
       cash.address, dai.address, unit, unit, unit, unit, accounts[0], deadline(),
     );
   }
 
-  if (DAI_BAS_PAIR === '0x0000000000000000000000000000000000000000') {
-    console.log('Deploying DAI_BAS_PAIR');
+  if (DAI_YSS_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying DAI_YSS_PAIR');
     await uniswapRouter.addLiquidity(
       share.address, dai.address, unit, unit, unit, unit, accounts[0],  deadline(),
     );
   }
 
-  console.log(`DAI-BAC pair address: ${await uniswap.getPair(dai.address, cash.address)}`);
-  console.log(`DAI-BAS pair address: ${await uniswap.getPair(dai.address, share.address)}`);
+  console.log(`DAI-YSD pair address: ${await uniswap.getPair(dai.address, cash.address)}`);
+  console.log(`DAI-YSS pair address: ${await uniswap.getPair(dai.address, share.address)}`);
 
   // Deploy boardroom
   await deployer.deploy(Boardroom, cash.address, share.address);

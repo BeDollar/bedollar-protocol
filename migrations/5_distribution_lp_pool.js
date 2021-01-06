@@ -7,8 +7,8 @@ const Oracle = artifacts.require('Oracle');
 const MockDai = artifacts.require('MockDai');
 const IERC20 = artifacts.require('IERC20');
 
-const DAIBACLPToken_BASPool = artifacts.require('DAIBACLPTokenSharePool')
-const DAIBASLPToken_BASPool = artifacts.require('DAIBASLPTokenSharePool')
+const DAIYSDLPToken_YSSPool = artifacts.require('DAIYSDLPTokenSharePool')
+const DAIYSSLPToken_YSSPool = artifacts.require('DAIYSSLPTokenSharePool')
 
 const UniswapV2Factory = artifacts.require('UniswapV2Factory');
 
@@ -32,6 +32,6 @@ module.exports = async (deployer, network, accounts) => {
   // const dai_bac_lpt = await uniswapFactory.getPair(Cash.address, dai.address);
   // const dai_bas_lpt = await uniswapFactory.getPair(Share.address, dai.address);
 
-  await deployer.deploy(DAIBACLPToken_BASPool, Share.address, dai_bac_lpt, POOL_START_DATE);
-  await deployer.deploy(DAIBASLPToken_BASPool, Share.address, dai_bas_lpt, POOL_START_DATE);
+  await deployer.deploy(DAIYSDLPToken_YSSPool, Share.address, dai_bac_lpt, POOL_START_DATE);
+  await deployer.deploy(DAIYSSLPToken_YSSPool, Share.address, dai_bas_lpt, POOL_START_DATE);
 };

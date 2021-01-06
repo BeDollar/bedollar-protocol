@@ -1,10 +1,8 @@
 pragma solidity ^0.6.0;
 
-import '../distribution/BACDAIPool.sol';
-import '../distribution/BACSUSDPool.sol';
-import '../distribution/BACUSDCPool.sol';
-import '../distribution/BACUSDTPool.sol';
-import '../distribution/BACyCRVPool.sol';
+import '../distribution/YSDDAIPool.sol';
+import '../distribution/YSDUSDCPool.sol';
+import '../distribution/YSDUSDTPool.sol';
 import '../interfaces/IDistributor.sol';
 
 contract InitialCashDistributor is IDistributor {
@@ -23,7 +21,7 @@ contract InitialCashDistributor is IDistributor {
         IRewardDistributionRecipient[] memory _pools,
         uint256 _totalInitialBalance
     ) public {
-        require(_pools.length != 0, 'a list of BAC pools are required');
+        require(_pools.length != 0, 'a list of YSD pools are required');
 
         cash = _cash;
         pools = _pools;

@@ -10,7 +10,7 @@ pragma solidity ^0.6.0;
 /___/ \_, //_//_/\__//_//_/\__/ \__//_/ /_\_\
      /___/
 
-* Synthetix: BASISCASHRewards.sol
+* Synthetix: YSSISCASHRewards.sol
 *
 * Docs: https://docs.synthetix.io/
 *
@@ -62,11 +62,11 @@ import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
 import '../interfaces/IRewardDistributionRecipient.sol';
 
-contract DAIWrapper {
+contract USDCWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public dai;
+    IERC20 public usdc;
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
@@ -82,17 +82,17 @@ contract DAIWrapper {
     function stake(uint256 amount) public virtual {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        dai.safeTransferFrom(msg.sender, address(this), amount);
+        usdc.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public virtual {
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        dai.safeTransfer(msg.sender, amount);
+        usdc.safeTransfer(msg.sender, amount);
     }
 }
 
-contract BACDAIPool is DAIWrapper, IRewardDistributionRecipient {
+contract YSDUSDCPool is USDCWrapper, IRewardDistributionRecipient {
     IERC20 public basisCash;
     uint256 public DURATION = 5 days;
 
@@ -112,16 +112,16 @@ contract BACDAIPool is DAIWrapper, IRewardDistributionRecipient {
 
     constructor(
         address basisCash_,
-        address dai_,
+        address usdc_,
         uint256 starttime_
     ) public {
         basisCash = IERC20(basisCash_);
-        dai = IERC20(dai_);
+        usdc = IERC20(usdc_);
         starttime = starttime_;
     }
 
     modifier checkStart() {
-        require(block.timestamp >= starttime, 'BACDAIPool: not start');
+        require(block.timestamp >= starttime, 'YSDUSDCPool: not start');
         _;
     }
 
@@ -168,11 +168,11 @@ contract BACDAIPool is DAIWrapper, IRewardDistributionRecipient {
         updateReward(msg.sender)
         checkStart
     {
-        require(amount > 0, 'BACDAIPool: Cannot stake 0');
+        require(amount > 0, 'YSDUSDCPool: Cannot stake 0');
         uint256 newDeposit = deposits[msg.sender].add(amount);
         require(
-            newDeposit <= 20000e18,
-            'BACDAIPool: deposit amount exceeds maximum 20000'
+            newDeposit <= 20000e18, // @XXX: BSC peg is 18
+            'YSDUSDCPool: deposit amount exceeds maximum 20000'
         );
         deposits[msg.sender] = newDeposit;
         super.stake(amount);
@@ -185,7 +185,7 @@ contract BACDAIPool is DAIWrapper, IRewardDistributionRecipient {
         updateReward(msg.sender)
         checkStart
     {
-        require(amount > 0, 'BACDAIPool: Cannot withdraw 0');
+        require(amount > 0, 'YSDUSDCPool: Cannot withdraw 0');
         deposits[msg.sender] = deposits[msg.sender].sub(amount);
         super.withdraw(amount);
         emit Withdrawn(msg.sender, amount);

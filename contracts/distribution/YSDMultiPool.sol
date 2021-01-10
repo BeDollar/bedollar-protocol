@@ -51,12 +51,11 @@ contract YSDMultiPool is ReentrancyGuard {
 
     mapping(address => uint256) public userRewardPerTokenPaid;
     mapping(address => uint256) public rewards;
+    mapping(address => uint) public supportedToken;
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
-    
-    mapping(address => uint) public supportedToken;
-    mapping(address => mapping(address => uint256)) public _subBalances;
+    mapping(address => mapping(address => uint256)) private _subBalances;
 
     /* ========== CONSTRUCTOR ========== */
 
@@ -78,6 +77,10 @@ contract YSDMultiPool is ReentrancyGuard {
 
     function balanceOf(address account) external view returns (uint256) {
         return _balances[account];
+    }
+
+    function subBalanceOf(address account, address token) external view returns (uint256) {
+        return _subBalances[account][token];
     }
 
     function lastTimeRewardApplicable() public view returns (uint256) {

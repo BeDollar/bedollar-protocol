@@ -34,10 +34,6 @@ import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
 import '../interfaces/IUniswapV2ERC20.sol';
 
-// File: contracts/interfaces/IyToken.sol
-
-import '../interfaces/IyToken.sol';
-
 contract YSDMultiPool is ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
@@ -45,6 +41,7 @@ contract YSDMultiPool is ReentrancyGuard {
     /* ========== STATE VARIABLES ========== */
 
     IERC20 public rewardsToken;
+    uint256 public startTime;
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
     uint256 public rewardsDuration = 49 days;
@@ -65,30 +62,16 @@ contract YSDMultiPool is ReentrancyGuard {
 
     constructor(
         address _rewardsToken,
-        address _owner
+        address _owner,
+        uint256 _startTime
     ) public {
         rewardsToken = IERC20(_rewardsToken);
         owner = address(_owner);
+        startTime = _startTime;
     }
 
     /* ========== VIEWS ========== */
 
-    /**
-     * @dev Throws if called by any account other than the owner.
-     */
-    modifier onlyOwner() {
-        require(owner == msg.sender, "Ownable: caller is not the owner");
-        _;
-    }
-    
-    /**
-     * @dev Throws if used token is not a supportedToken.
-     */
-    modifier onlySupportedToken(address token) {
-        require(supportedToken[token] != 0, "token is not supported");
-        _;
-    }    
-    
     function totalSupply() external view returns (uint256) {
         return _totalSupply;
     }
@@ -125,27 +108,27 @@ contract YSDMultiPool is ReentrancyGuard {
 
     /* ========== MUTATIVE FUNCTIONS ========== */
 
-    function stake(address token, uint256 amount) public nonReentrant updateReward(msg.sender) onlySupportedToken(token) {
+    function stake(address token, uint256 amount) public nonReentrant updateReward(msg.sender) onlySupportedToken(token) checkStart {
         require(amount > 0, "Cannot stake 0");
-        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);        
+        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
         _subBalances[msg.sender][token] = _subBalances[msg.sender][token].add(amount);
         emit Staked(msg.sender, token, amount);
         amount = amount.mul(supportedToken[token]);
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-    }    
+    }
 
-    function withdraw(address token, uint256 amount) public nonReentrant updateReward(msg.sender) onlySupportedToken(token) {
+    function withdraw(address token, uint256 amount) public nonReentrant updateReward(msg.sender) onlySupportedToken(token) checkStart {
         require(amount > 0, "Cannot withdraw 0");
         IERC20(token).safeTransfer(msg.sender, amount);
         _subBalances[msg.sender][token] = _subBalances[msg.sender][token].sub(amount);
         emit Withdrawn(msg.sender, token, amount);
-        amount = amount.mul(supportedToken[token]);        
+        amount = amount.mul(supportedToken[token]);
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
     }
 
-    function getReward() public nonReentrant updateReward(msg.sender) {
+    function getReward() public nonReentrant updateReward(msg.sender) checkStart {
         uint256 reward = rewards[msg.sender];
         if (reward > 0) {
             rewards[msg.sender] = 0;
@@ -153,33 +136,66 @@ contract YSDMultiPool is ReentrancyGuard {
             emit RewardPaid(msg.sender, reward);
         }
     }
-    
+
+    function exit(address token) external {
+        withdraw(token, _balances[msg.sender]);
+        getReward();
+    }
+
     /* ========== RESTRICTED FUNCTIONS ========== */
 
     function notifyRewardAmount(uint256 reward) external updateReward(address(0)) {
-        if (block.timestamp >= periodFinish) {
-            rewardRate = reward.div(rewardsDuration);
+        if (block.timestamp > startTime) {
+            if (block.timestamp >= periodFinish) {
+                rewardRate = reward.div(rewardsDuration);
+            } else {
+                uint lastRate = rewardRate;
+                uint256 remaining = periodFinish.sub(block.timestamp);
+                uint256 leftover = remaining.mul(rewardRate);
+                rewardRate = reward.add(leftover).div(rewardsDuration);
+                require(rewardRate >= lastRate, "rewardRate >= lastRate");
+            }
+
+            // Ensure the provided reward amount is not more than the balance in the contract.
+            // This keeps the reward rate in the right range, preventing overflows due to
+            // very high values of rewardRate in the earned and rewardsPerToken functions;
+            // Reward + leftover must be less than 2^256 / 10^18 to avoid overflow.
+            uint balance = rewardsToken.balanceOf(address(this));
+            require(rewardRate <= balance.div(rewardsDuration), "Provided reward too high");
+
+            lastUpdateTime = block.timestamp;
+            periodFinish = block.timestamp.add(rewardsDuration);
+            emit RewardAdded(reward);
         } else {
-            uint lastRate = rewardRate;
-            uint256 remaining = periodFinish.sub(block.timestamp);
-            uint256 leftover = remaining.mul(rewardRate);
-            rewardRate = reward.add(leftover).div(rewardsDuration);
-            require(rewardRate >= lastRate, "rewardRate >= lastRate");
+            rewardRate = reward.div(rewardsDuration);
+            lastUpdateTime = startTime;
+            periodFinish = startTime.add(rewardsDuration);
+            emit RewardAdded(reward);
         }
-
-        // Ensure the provided reward amount is not more than the balance in the contract.
-        // This keeps the reward rate in the right range, preventing overflows due to
-        // very high values of rewardRate in the earned and rewardsPerToken functions;
-        // Reward + leftover must be less than 2^256 / 10^18 to avoid overflow.
-        uint balance = rewardsToken.balanceOf(address(this));
-        require(rewardRate <= balance.div(rewardsDuration), "Provided reward too high");
-
-        lastUpdateTime = block.timestamp;
-        periodFinish = block.timestamp.add(rewardsDuration);
-        emit RewardAdded(reward);
     }
 
     /* ========== MODIFIERS ========== */
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(owner == msg.sender, "Ownable: caller is not the owner");
+        _;
+    }
+    
+    /**
+     * @dev Throws if used token is not a supportedToken.
+     */
+    modifier onlySupportedToken(address token) {
+        require(supportedToken[token] != 0, "Token is not supported");
+        _;
+    }
+
+    modifier checkStart() {
+        require(block.timestamp >= startTime, 'YSDMultiPool: not start');
+        _;
+    }
 
     modifier updateReward(address account) {
         rewardPerTokenStored = rewardPerToken();

@@ -1,4 +1,8 @@
-export const TREASURY_START_DATE = Date.parse('2020-12-22T00:00:00Z') / 1000;
-export const ORACLE_START_DATE = Date.parse('2020-12-19T00:00:00Z') / 1000;
-export const UNI_FACTORY = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
-export const DAI = '0x6b175474e89094c44da98b954eedeac495271d0f';
+export const TREASURY_START_DATE = Date.parse('2021-01-10T12:00:00Z') / 1000;
+export const ORACLE_START_DATE = Date.parse('2021-01-07T12:00:00Z') / 1000;
+// export const UNI_FACTORY = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
+export const UNISAVE_FACTORY = '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470';
+// export const DAI = '0x6b175474e89094c44da98b954eedeac495271d0f';
+export const DAI_BSC_MAINNET = '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3';
+export const DAI_BSC_TESTNET = '0xec5dcb5dbf4b114c9d0f65bccab49ec54f6a0867';
+export const BUSD_BSC_MAINNET = '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56';

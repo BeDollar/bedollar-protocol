@@ -13,6 +13,8 @@ const bacPools = [
   // { contractName: 'YSDyCRVPool', token: 'yCRV' },
 ];
 
+const StakingTokens = ['DAI', 'USDC', 'USDT']
+
 const basPools = {
   DAIYSD: { contractName: 'DAIYSDLPTokenSharePool', token: 'DAI_YSD-LPv2' },
   DAIYSS: { contractName: 'DAIYSSLPTokenSharePool', token: 'DAI_YSS-LPv2' },
@@ -24,5 +26,6 @@ module.exports = {
   INITIAL_YSS_FOR_DAI_YSD,
   INITIAL_YSS_FOR_DAI_YSS,
   bacPools,
+  StakingTokens,
   basPools,
 };

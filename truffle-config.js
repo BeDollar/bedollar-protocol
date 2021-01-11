@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -101,12 +103,19 @@ module.exports = {
       version: '0.6.12+commit.27d51765', // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       settings: {          // See the solidity docs for advice about optimization and evmVersion
-       optimizer: {
-         enabled: true,
-         runs: 200
-       },
+        optimizer: {
+          enabled: true,
+          runs: 200
+        },
       //  evmVersion: "byzantium"
       }
     },
   },
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    etherscan: process.env.ETHERSCAN_KEY,
+    bscscan: process.env.BSCSCAN_KEY
+  }
 }

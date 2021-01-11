@@ -16,7 +16,8 @@
     "deploy:heco_testnet": "truffle migrate --network heco_testnet",
     "deploy:heco_mainnet": "truffle migrate --network heco_mainnet",
     "deploy:bsc_testnet": "truffle migrate --network bsc_testnet",
-    "deploy:bsc_mainnet": "truffle migrate --network bsc_mainnet"
+    "deploy:bsc_mainnet": "truffle migrate --network bsc_mainnet",
+    "verify:bsc_testnet": "truffle run verify --network bsc_testnet"
   },
   "devDependencies": {
     "@ethersproject/address": "^5.0.0-beta",
@@ -36,6 +37,7 @@
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "chai": "^4.2.0",
+    "dotenv-flow": "^3.2.0",
     "ethereum-waffle": "^3.2.0",
     "ethereumjs-util": "^7.0.7",
     "ethers": "^5.0.19",

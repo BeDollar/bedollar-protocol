@@ -44,7 +44,7 @@ contract YSDMultiPool is ReentrancyGuard {
     uint256 public startTime;
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
-    uint256 public rewardsDuration = 49 days;
+    uint256 public rewardsDuration = 3 days;
     uint256 public lastUpdateTime;
     uint256 public rewardPerTokenStored;
     address public owner;

@@ -18,8 +18,7 @@ const exportedContracts = [
   'Share',
   'Boardroom',
   'Treasury',
-  'BondOracle',
-  'SeigniorageOracle',
+  'Oracle',
   ...distributionPoolContracts(),
 ];
 

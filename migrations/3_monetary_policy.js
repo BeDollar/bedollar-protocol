@@ -9,7 +9,8 @@ const Share = artifacts.require('Share');
 const IERC20 = artifacts.require('IERC20');
 const MockDai = artifacts.require('MockDai');
 
-const Oracle = artifacts.require('Oracle')
+const BondOracle = artifacts.require('Oracle');
+const SeigniorageOracle = artifacts.require('Oracle');
 const Boardroom = artifacts.require('Boardroom')
 const Treasury = artifacts.require('Treasury')
 
@@ -17,6 +18,7 @@ const UniswapV2Factory = artifacts.require('UniswapV2Factory');
 const UniswapV2Router02 = artifacts.require('UniswapV2Router02');
 
 const DAY = 86400;
+const HOUR = 3600;
 
 async function migration(deployer, network, accounts) {
   let uniswap, uniswapRouter;
@@ -84,16 +86,25 @@ async function migration(deployer, network, accounts) {
     uniswap.address,
     cash.address,
     dai.address,
-    3600,
+    HOUR,
     POOL_START_DATE
   )
   await deployer.deploy(
-    Oracle,
+    BondOracle,
     uniswap.address,
     cash.address,
     dai.address,
     // _period in 0x3e233a85535d32De0FDeA8510D460c0Aef7fDFeC, likely is 1 hour(60min * 60sec)
-    3600,
+    HOUR,
+    POOL_START_DATE
+  );
+
+  await deployer.deploy(
+    SeigniorageOracle,
+    uniswap.address,
+    cash.address,
+    dai.address,
+    DAY,
     POOL_START_DATE
   );
 
@@ -107,8 +118,8 @@ async function migration(deployer, network, accounts) {
     cash.address,
     Bond.address,
     Share.address,
-    Oracle.address, // bond
-    Oracle.address, // seigniorage
+    BondOracle.address, // bond
+    SeigniorageOracle.address, // seigniorage
     Boardroom.address,
     SimpleERCFund.address,
     startTime,

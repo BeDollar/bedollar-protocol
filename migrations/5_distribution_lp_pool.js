@@ -3,7 +3,7 @@ const { POOL_START_DATE } = require('./pools');
 
 const Cash = artifacts.require('Cash');
 const Share = artifacts.require('Share');
-const Oracle = artifacts.require('Oracle');
+// const Oracle = artifacts.require('Oracle');
 const MockDai = artifacts.require('MockDai');
 const IERC20 = artifacts.require('IERC20');
 
@@ -20,7 +20,7 @@ module.exports = async (deployer, network, accounts) => {
     ? await IERC20.at(knownContracts.DAI[network])
     : await MockDai.deployed();
 
-  const oracle = await Oracle.deployed();
+  // const oracle = await Oracle.deployed();
 
   // @XXX: remember to switch codehash for Oracle if you switch swap/network
   // const dai_bac_lpt = await oracle.pairFor(uniswapFactory.address, Cash.address, dai.address);

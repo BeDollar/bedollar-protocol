@@ -3,7 +3,7 @@ const INITIAL_YSD_FOR_POOLS = 50000;
 const INITIAL_YSS_FOR_DAI_YSD = 750000;
 const INITIAL_YSS_FOR_DAI_YSS = 250000;
 
-const POOL_START_DATE = Date.parse('2020-12-30T00:00:00Z') / 1000;
+const POOL_START_DATE = Date.parse('2021-02-23T00:00:00Z') / 1000;
 
 const bacPools = [
   { contractName: 'YSDDAIPool', token: 'DAI' },

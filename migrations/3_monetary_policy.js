@@ -37,8 +37,8 @@ async function migration(deployer, network, accounts) {
     uniswapRouter = await UniswapV2Router02.at(knownContracts.UniswapV2Router02[network]);
   }
 
-  const dai = knownContracts.TargetedStableCoin[network]
-    ? await IERC20.at(knownContracts.TargetedStableCoin[network])
+  const dai = knownContracts.BUSD[network]
+    ? await IERC20.at(knownContracts.BUSD[network])
     : await MockDai.deployed();
 
   // 2. provide liquidity to YSD-DAI and YSS-DAI pair

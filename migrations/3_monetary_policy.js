@@ -9,7 +9,8 @@ const Share = artifacts.require('Share');
 const IERC20 = artifacts.require('IERC20');
 const MockDai = artifacts.require('MockDai');
 
-const Oracle = artifacts.require('Oracle');
+const SeigniorageOracle = artifacts.require('SeigniorageOracle');
+const BondOracle = artifacts.require('BondOracle');
 const Boardroom = artifacts.require('Boardroom')
 const Treasury = artifacts.require('Treasury')
 
@@ -88,8 +89,8 @@ async function migration(deployer, network, accounts) {
     HOUR,
     POOL_START_DATE
   )
-  const BondOracle = await deployer.deploy(
-    Oracle,
+  await deployer.deploy(
+    BondOracle,
     uniswap.address,
     cash.address,
     dai.address,
@@ -98,8 +99,8 @@ async function migration(deployer, network, accounts) {
     POOL_START_DATE
   );
 
-  const SeigniorageOracle = await deployer.deploy(
-    Oracle,
+  await deployer.deploy(
+    SeigniorageOracle,
     uniswap.address,
     cash.address,
     dai.address,

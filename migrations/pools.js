@@ -13,7 +13,7 @@ const bacPools = [
   // { contractName: 'YSDyCRVPool', token: 'yCRV' },
 ];
 
-const StakingTokens = ['DAI', 'USDC', 'USDT']
+const StakingTokens = ['TargetedStableCoin', 'USDC', 'USDT']
 
 const basPools = {
   DAIYSD: { contractName: 'DAIYSDLPTokenSharePool', token: 'DAI_YSD-LPv2' },

@@ -16,7 +16,7 @@ module.exports = async (deployer, network, accounts) => {
   const uniswapFactory = ['dev'].includes(network)
     ? await UniswapV2Factory.deployed()
     : await UniswapV2Factory.at(knownContracts.UniswapV2Factory[network]);
-  const dai = knownContracts.TargetedStableCoin[network]
+  const targetedStableCoin = knownContracts.TargetedStableCoin[network]
     ? await IERC20.at(knownContracts.TargetedStableCoin[network])
     : await MockDai.deployed();
 
@@ -26,8 +26,8 @@ module.exports = async (deployer, network, accounts) => {
   // const dai_bac_lpt = await oracle.pairFor(uniswapFactory.address, Cash.address, dai.address);
   // const dai_bas_lpt = await oracle.pairFor(uniswapFactory.address, Share.address, dai.address);
   const [dai_bac_lpt, dai_bas_lpt] = await Promise.all([
-    uniswapFactory.getPair(Cash.address, dai.address),
-    uniswapFactory.getPair(Share.address, dai.address)
+    uniswapFactory.getPair(Cash.address, targetedStableCoin.address),
+    uniswapFactory.getPair(Share.address, targetedStableCoin.address)
   ])
   // const dai_bac_lpt = await uniswapFactory.getPair(Cash.address, dai.address);
   // const dai_bas_lpt = await uniswapFactory.getPair(Share.address, dai.address);

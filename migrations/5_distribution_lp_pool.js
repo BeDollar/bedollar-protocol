@@ -16,8 +16,8 @@ module.exports = async (deployer, network, accounts) => {
   const uniswapFactory = ['dev'].includes(network)
     ? await UniswapV2Factory.deployed()
     : await UniswapV2Factory.at(knownContracts.UniswapV2Factory[network]);
-  const dai = knownContracts.DAI[network]
-    ? await IERC20.at(knownContracts.DAI[network])
+  const dai = knownContracts.TargetedStableCoin[network]
+    ? await IERC20.at(knownContracts.TargetedStableCoin[network])
     : await MockDai.deployed();
 
   // const oracle = await Oracle.deployed();

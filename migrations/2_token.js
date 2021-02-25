@@ -26,7 +26,7 @@ async function deployToken(deployer, network, accounts) {
   await deployer.deploy(Share);
   await deployer.deploy(SimpleERCFund)
 
-  if (!knownContracts.DAI[network]) {
+  if (!knownContracts.TargetedStableCoin[network]) {
     const dai = await deployer.deploy(MockDai);
     console.log(`MockDAI address: ${dai.address}`);
   }

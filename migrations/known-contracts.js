@@ -19,9 +19,10 @@ module.exports = {
     heco_mainnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
     heco_testnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
   },
-  DAI: {
-    mainnet: '0x6b175474e89094c44da98b954eedeac495271d0f',
-    bsc_testnet: '0xEC5dCb5Dbf4B114C9d0F65BcCAb49EC54F6A0867'
+  TargetedStableCoin: {
+    mainnet: '0x6b175474e89094c44da98b954eedeac495271d0f', // ETH DAI
+    bsc_mainnet: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', // BSC BUSD actually
+    bsc_testnet: '0xEC5dCb5Dbf4B114C9d0F65BcCAb49EC54F6A0867' // Peg DAI
   },
   SUSD: {
     mainnet: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',

@@ -105,9 +105,9 @@ async function migration(deployer, network, accounts) {
   );
 
   let startTime = POOL_START_DATE;
-  if (network === 'mainnet') {
-    startTime += 5 * DAY;
-  }
+  // if (network === 'mainnet') {
+  //   startTime += 5 * DAY;
+  // }
 
   await deployer.deploy(
     Treasury,

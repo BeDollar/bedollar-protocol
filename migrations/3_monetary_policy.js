@@ -20,6 +20,9 @@ const UniswapV2Router02 = artifacts.require('UniswapV2Router02');
 const DAY = 86400;
 const HOUR = 3600;
 
+const BOND_START_DATE = POOL_START_DATE + DAY
+const TREASURY_START_DATE = POOL_START_DATE + (5 * DAY)
+
 async function migration(deployer, network, accounts) {
   let uniswap, uniswapRouter;
   if (['dev'].includes(network)) {
@@ -81,14 +84,7 @@ async function migration(deployer, network, accounts) {
   // Deploy boardroom
   await deployer.deploy(Boardroom, cash.address, share.address);
 
-  // 2. Deploy oracle for the pair between bac and dai
-  console.log(
-    uniswap.address,
-    cash.address,
-    dai.address,
-    HOUR,
-    POOL_START_DATE
-  )
+  // 2. Deploy oracle for the pair between bac and busd
   await deployer.deploy(
     BondOracle,
     uniswap.address,
@@ -96,7 +92,7 @@ async function migration(deployer, network, accounts) {
     dai.address,
     // _period in 0x3e233a85535d32De0FDeA8510D460c0Aef7fDFeC, likely is 1 hour(60min * 60sec)
     HOUR,
-    POOL_START_DATE
+    BOND_START_DATE
   );
 
   await deployer.deploy(
@@ -105,7 +101,7 @@ async function migration(deployer, network, accounts) {
     cash.address,
     dai.address,
     DAY,
-    POOL_START_DATE
+    TREASURY_START_DATE
   );
 
   let startTime = POOL_START_DATE;

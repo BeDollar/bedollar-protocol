@@ -51,6 +51,11 @@ module.exports = {
       gasPrice: 50000000000,
       gas: 6721975, // Any network (default: none)
     },
+    bsc_mainnet: {
+      provider: () => new HDWalletProvider(mnemonic, 'wss://bsc-ws-node.nariox.org:443'),
+      network_id: 56,
+      gas: 8000000,
+    },
     bsc_testnet: {
       provider: () => new HDWalletProvider(mnemonic, 'https://data-seed-prebsc-1-s1.binance.org:8545'),
       network_id: 97,

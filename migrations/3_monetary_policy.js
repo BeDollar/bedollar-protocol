@@ -56,19 +56,19 @@ async function migration(deployer, network, accounts) {
   // WARNING: msg.sender must hold enough DAI to add liquidity to YSD-DAI & YSS-DAI pools
   // otherwise transaction will revert
   console.log('Adding liquidity to pools');
-  const [DAI_YSD_PAIR, DAI_YSS_PAIR ] = await Promise.all([
+  const [BUSD_YSD_PAIR, BUSD_YSS_PAIR ] = await Promise.all([
     uniswap.getPair(dai.address, cash.address),
     uniswap.getPair(dai.address, share.address)
   ])
-  if (DAI_YSD_PAIR === '0x0000000000000000000000000000000000000000') {
-    console.log('Deploying DAI_YSD_PAIR');
+  if (BUSD_YSD_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying BUSD_YSD_PAIR');
     await uniswapRouter.addLiquidity(
       cash.address, dai.address, unit, unit, unit, unit, accounts[0], deadline(),
     );
   }
 
-  if (DAI_YSS_PAIR === '0x0000000000000000000000000000000000000000') {
-    console.log('Deploying DAI_YSS_PAIR');
+  if (BUSD_YSS_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying BUSD_YSS_PAIR');
     await uniswapRouter.addLiquidity(
       share.address, dai.address, unit, unit, unit, unit, accounts[0],  deadline(),
     );

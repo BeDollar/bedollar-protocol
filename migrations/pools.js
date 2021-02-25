@@ -16,8 +16,8 @@ const bacPools = [
 const StakingTokens = ['TargetedStableCoin', 'USDC', 'USDT']
 
 const basPools = {
-  DAIYSD: { contractName: 'DAIYSDLPTokenSharePool', token: 'DAI_YSD-LPv2' },
-  DAIYSS: { contractName: 'DAIYSSLPTokenSharePool', token: 'DAI_YSS-LPv2' },
+  BUSDYSD: { contractName: 'BUSDYSDLPTokenSharePool', token: 'BUSD_YSD-LPv2' },
+  BUSDYSS: { contractName: 'BUSDYSSLPTokenSharePool', token: 'BUSD_YSS-LPv2' },
 }
 
 module.exports = {

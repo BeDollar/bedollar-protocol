@@ -33,10 +33,12 @@ module.exports = {
   },
   USDC: {
     mainnet: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    bsc_mainnet: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
     bsc_testnet: '0x64544969ed7ebf5f083679233325356ebe738930'
   },
   USDT: {
     mainnet: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    bsc_mainnet: '0x55d398326f99059fF775485246999027B3197955',
     bsc_testnet: '0x337610d27c682e347c9cd60bd4b3b107c9d34ddd'
   },
   yCRV: {

@@ -33,6 +33,7 @@ import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 // File: contracts/interfaces/IUniswapV2ERC20.sol
 
 import '../interfaces/IUniswapV2ERC20.sol';
+import '../interfaces/IyToken.sol';
 
 contract YSDMultiPool is ReentrancyGuard {
     using SafeMath for uint256;
@@ -52,6 +53,7 @@ contract YSDMultiPool is ReentrancyGuard {
     mapping(address => uint256) public userRewardPerTokenPaid;
     mapping(address => uint256) public rewards;
     mapping(address => uint256) public supportedToken;
+    mapping(address => IyToken) public yTokens;
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
@@ -96,6 +98,14 @@ contract YSDMultiPool is ReentrancyGuard {
         onlyOwner()
     {
         supportedToken[token] = weight;
+    }
+    function addYToken(address token, address yToken)
+        external
+        onlyOwner()
+        onlySupportedToken(token)
+    {
+        yTokens[token] = IyToken(yToken);
+        IERC20(supportedToken[token]).safeApprove(yToken, uint(-1));
     }
 
     function rewardPerToken() public view returns (uint256) {
@@ -152,6 +162,10 @@ contract YSDMultiPool is ReentrancyGuard {
         checkStart
     {
         require(amount > 0, 'Cannot withdraw 0');
+        uint balance = IERC20(token).balanceOf(address(this));
+        if (amount > balance) {
+            yTokens[token].withdraw(amount.sub(balance));
+        }
         IERC20(token).safeTransfer(msg.sender, amount);
         _subBalances[msg.sender][token] = _subBalances[msg.sender][token].sub(
             amount
@@ -179,6 +193,13 @@ contract YSDMultiPool is ReentrancyGuard {
     function exit(address token) external {
         withdraw(token, _balances[msg.sender]);
         getReward();
+    }
+
+    function depositAll(address token) external onlySupportedToken(token) {
+        yTokens[token].deposit(IERC20(token).balanceOf(address(this)));
+    }
+    function withdrawAll(address token) external onlySupportedToken(token) {
+        yTokens[token].withdraw(yTokens[token].balanceOf(address(this)));
     }
 
     /* ========== RESTRICTED FUNCTIONS ========== */

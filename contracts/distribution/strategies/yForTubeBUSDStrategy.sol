@@ -2,7 +2,7 @@ pragma solidity ^0.6.0;
 
 import './ForTube.sol';
 
-contract yForTubeBUSD is ForTube {
+contract yForTubeBUSDStrategy is ForTube {
     constructor()
         public
         ForTube(

@@ -49,7 +49,7 @@ contract ForTube is ERC20, IyToken {
         require(_shares > 0, "unstake shares must be greater than 0");
         uint r = _u.balanceOf(address(this));
         if (r < _shares) {
-            IForTubeBank(fortubeBank).withdrawUnderlying(_u, _shares.sub(r));
+            IForTubeBank(fortubeBank).withdrawUnderlying(address(_u), _shares.sub(r));
         }
         _burn(msg.sender, _shares);
         _u.safeTransfer(msg.sender, _shares);

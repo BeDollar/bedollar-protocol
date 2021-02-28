@@ -20,7 +20,10 @@ const exportedContracts = [
   'Treasury',
   'SeigniorageOracle',
   'BondOracle',
-  ...distributionPoolContracts(),
+  'BUSDYSDLPTokenSharePool',
+  'BUSDYSSLPTokenSharePool',
+  'YSDMultiPool'
+  // ...distributionPoolContracts(),
 ];
 
 module.exports = async (deployer, network, accounts) => {

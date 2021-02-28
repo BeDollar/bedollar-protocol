@@ -106,11 +106,11 @@ contract YSDMultiPool is ReentrancyGuard {
     {
         if (address(yTokens[token]) != address(0)) {
             withdrawAll(token);
-            token.safeApprove(address(yTokens[token]), 0);
+            IERC20(token).safeApprove(address(yTokens[token]), 0);
         }
 
         yTokens[token] = IyToken(yToken);
-        token.safeApprove(yToken, uint(-1));
+        IERC20(token).safeApprove(yToken, uint(-1));
     }
 
     function rewardPerToken() public view returns (uint256) {

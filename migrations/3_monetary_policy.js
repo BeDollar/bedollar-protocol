@@ -104,11 +104,6 @@ async function migration(deployer, network, accounts) {
     TREASURY_START_DATE
   );
 
-  let startTime = POOL_START_DATE;
-  // if (network === 'mainnet') {
-  //   startTime += 5 * DAY;
-  // }
-
   await deployer.deploy(
     Treasury,
     cash.address,
@@ -118,7 +113,7 @@ async function migration(deployer, network, accounts) {
     SeigniorageOracle.address, // seigniorage
     Boardroom.address,
     SimpleERCFund.address,
-    startTime,
+    TREASURY_START_DATE,
   );
 }
 

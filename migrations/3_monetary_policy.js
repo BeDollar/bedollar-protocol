@@ -37,7 +37,7 @@ async function migration(deployer, network, accounts) {
     uniswapRouter = await UniswapV2Router02.at(knownContracts.UniswapV2Router02[network]);
   }
 
-  const dai = knownContracts.BUSD[network]
+  const busd = knownContracts.BUSD[network]
     ? await IERC20.at(knownContracts.BUSD[network])
     : await MockDai.deployed();
 
@@ -54,32 +54,32 @@ async function migration(deployer, network, accounts) {
   await Promise.all([
     approveIfNot(cash, accounts[0], uniswapRouter.address, max),
     approveIfNot(share, accounts[0], uniswapRouter.address, max),
-    approveIfNot(dai, accounts[0], uniswapRouter.address, max),
+    approveIfNot(busd, accounts[0], uniswapRouter.address, max),
   ]);
 
   // WARNING: msg.sender must hold enough DAI to add liquidity to YSD-DAI & YSS-DAI pools
   // otherwise transaction will revert
   console.log('Adding liquidity to pools');
   const [BUSD_YSD_PAIR, BUSD_YSS_PAIR ] = await Promise.all([
-    uniswap.getPair(dai.address, cash.address),
-    uniswap.getPair(dai.address, share.address)
+    uniswap.getPair(busd.address, cash.address),
+    uniswap.getPair(busd.address, share.address)
   ])
   if (BUSD_YSD_PAIR === '0x0000000000000000000000000000000000000000') {
     console.log('Deploying BUSD_YSD_PAIR');
     await uniswapRouter.addLiquidity(
-      cash.address, dai.address, unit, unit, unit, unit, accounts[0], deadline(),
+      cash.address, busd.address, unit, unit, unit, unit, accounts[0], deadline(),
     );
   }
 
   if (BUSD_YSS_PAIR === '0x0000000000000000000000000000000000000000') {
     console.log('Deploying BUSD_YSS_PAIR');
     await uniswapRouter.addLiquidity(
-      share.address, dai.address, unit, unit, unit, unit, accounts[0],  deadline(),
+      share.address, busd.address, unit, unit, unit, unit, accounts[0],  deadline(),
     );
   }
 
-  console.log(`DAI-YSD pair address: ${await uniswap.getPair(dai.address, cash.address)}`);
-  console.log(`DAI-YSS pair address: ${await uniswap.getPair(dai.address, share.address)}`);
+  console.log(`BUSD-YSD pair address: ${await uniswap.getPair(busd.address, cash.address)}`);
+  console.log(`BUSD-YSS pair address: ${await uniswap.getPair(busd.address, share.address)}`);
 
   // Deploy boardroom
   await deployer.deploy(Boardroom, cash.address, share.address);
@@ -89,7 +89,7 @@ async function migration(deployer, network, accounts) {
     BondOracle,
     uniswap.address,
     cash.address,
-    dai.address,
+    busd.address,
     // _period in 0x3e233a85535d32De0FDeA8510D460c0Aef7fDFeC, likely is 1 hour(60min * 60sec)
     HOUR,
     BOND_START_DATE
@@ -99,7 +99,7 @@ async function migration(deployer, network, accounts) {
     SeigniorageOracle,
     uniswap.address,
     cash.address,
-    dai.address,
+    busd.address,
     DAY,
     TREASURY_START_DATE
   );

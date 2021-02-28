@@ -152,6 +152,7 @@ contract YSDMultiPool is ReentrancyGuard {
         amount = amount.mul(supportedToken[token]);
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
+        depositAll(token);
     }
 
     function withdraw(address token, uint256 amount)
@@ -195,10 +196,10 @@ contract YSDMultiPool is ReentrancyGuard {
         getReward();
     }
 
-    function depositAll(address token) external onlySupportedToken(token) {
+    function depositAll(address token) public onlySupportedToken(token) {
         yTokens[token].deposit(IERC20(token).balanceOf(address(this)));
     }
-    function withdrawAll(address token) external onlySupportedToken(token) {
+    function withdrawAll(address token) external onlySupportedToken(token) onlyOwner {
         yTokens[token].withdraw(yTokens[token].balanceOf(address(this)));
     }
 

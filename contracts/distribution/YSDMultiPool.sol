@@ -104,6 +104,11 @@ contract YSDMultiPool is ReentrancyGuard {
         onlyOwner()
         onlySupportedToken(token)
     {
+        if (address(yTokens[token]) != address(0)) {
+            withdrawAll(token);
+            IERC20(supportedToken[token]).safeApprove(yToken, 0);
+        }
+
         yTokens[token] = IyToken(yToken);
         IERC20(supportedToken[token]).safeApprove(yToken, uint(-1));
     }
@@ -199,7 +204,7 @@ contract YSDMultiPool is ReentrancyGuard {
     function depositAll(address token) public onlySupportedToken(token) {
         yTokens[token].deposit(IERC20(token).balanceOf(address(this)));
     }
-    function withdrawAll(address token) external onlySupportedToken(token) onlyOwner {
+    function withdrawAll(address token) public onlySupportedToken(token) onlyOwner {
         yTokens[token].withdraw(yTokens[token].balanceOf(address(this)));
     }
 

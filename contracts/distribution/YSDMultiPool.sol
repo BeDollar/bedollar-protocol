@@ -157,7 +157,9 @@ contract YSDMultiPool is ReentrancyGuard {
         amount = amount.mul(supportedToken[token]);
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        depositAll(token);
+        if (address(yTokens[token]) != address(0)) {
+            depositAll(token);
+        }
     }
 
     function withdraw(address token, uint256 amount)

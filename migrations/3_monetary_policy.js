@@ -21,7 +21,7 @@ const DAY = 86400;
 const HOUR = 3600;
 
 const BOND_START_DATE = POOL_START_DATE + DAY
-const TREASURY_START_DATE = POOL_START_DATE + (5 * DAY)
+const TREASURY_START_DATE = POOL_START_DATE + (2 * DAY)
 
 async function migration(deployer, network, accounts) {
   let uniswap, uniswapRouter;

@@ -2,35 +2,19 @@ pragma solidity ^0.6.0;
 
 // SPDX-License-Identifier: UNLICENSED
 
-// File: @openzeppelin/contracts/GSN/Context.sol
-
 import '@openzeppelin/contracts/GSN/Context.sol';
-
-// File: @openzeppelin/contracts/utils/ReentrancyGuard.sol
 
 import '@openzeppelin/contracts/utils/ReentrancyGuard.sol';
 
-// File: @openzeppelin/contracts/token/ERC20/IERC20.sol
-
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-
-// File: @openzeppelin/contracts/math/Math.sol
 
 import '@openzeppelin/contracts/math/Math.sol';
 
-// File: @openzeppelin/contracts/math/SafeMath.sol
-
 import '@openzeppelin/contracts/math/SafeMath.sol';
-
-// File: @openzeppelin/contracts/utils/Address.sol
 
 import '@openzeppelin/contracts/utils/Address.sol';
 
-// File: @openzeppelin/contracts/token/ERC20/SafeERC20.sol
-
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
-
-// File: contracts/interfaces/IUniswapV2ERC20.sol
 
 import '../interfaces/IUniswapV2ERC20.sol';
 import '../interfaces/IyToken.sol';
@@ -99,6 +83,7 @@ contract YSDMultiPool is ReentrancyGuard {
     {
         supportedToken[token] = weight;
     }
+
     function addYToken(address token, address yToken)
         external
         onlyOwner()
@@ -110,7 +95,7 @@ contract YSDMultiPool is ReentrancyGuard {
         }
 
         yTokens[token] = IyToken(yToken);
-        IERC20(token).safeApprove(yToken, uint(-1));
+        IERC20(token).safeApprove(yToken, uint256(-1));
     }
 
     function rewardPerToken() public view returns (uint256) {
@@ -170,7 +155,7 @@ contract YSDMultiPool is ReentrancyGuard {
         checkStart
     {
         require(amount > 0, 'Cannot withdraw 0');
-        uint balance = IERC20(token).balanceOf(address(this));
+        uint256 balance = IERC20(token).balanceOf(address(this));
         if (amount > balance) {
             yTokens[token].withdraw(amount.sub(balance));
         }
@@ -206,7 +191,12 @@ contract YSDMultiPool is ReentrancyGuard {
     function depositAll(address token) public onlySupportedToken(token) {
         yTokens[token].deposit(IERC20(token).balanceOf(address(this)));
     }
-    function withdrawAll(address token) public onlySupportedToken(token) onlyOwner {
+
+    function withdrawAll(address token)
+        public
+        onlySupportedToken(token)
+        onlyOwner
+    {
         yTokens[token].withdraw(yTokens[token].balanceOf(address(this)));
     }
 

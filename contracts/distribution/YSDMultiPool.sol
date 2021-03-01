@@ -142,6 +142,14 @@ contract YSDMultiPool is ReentrancyGuard {
         amount = amount.mul(supportedToken[token]);
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
+
+        /* For Beta only, to avoid someone YOLOed large amount into a testing contract */
+        require(
+            _balances[msg.sender] <= 10 * 1e18,
+            'AmountLimit: Do not YOLO a Beta contract'
+        );
+        /* Remove this above when launching */
+
         if (address(yTokens[token]) != address(0)) {
             depositAll(token);
         }

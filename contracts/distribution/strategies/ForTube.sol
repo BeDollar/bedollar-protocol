@@ -13,6 +13,7 @@ interface IForTubeBank {
     function withdrawUnderlying(address underlying, uint256 withdrawAmount) external;
 }
 interface IForTubeReward {
+    function rewardToken() external view returns (address);
     function claimReward() external;
     function checkBalance(address account) external view returns (uint256);
 }
@@ -22,7 +23,6 @@ contract ForTube is ERC20, IyToken {
     address constant factory = address(0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470);
     address constant fortubeBank = address(0x0cEA0832e9cdBb5D476040D58Ea07ecfbeBB7672);
     address constant fortubeBankController = address(0xc78248D676DeBB4597e88071D3d889eCA70E5469);
-    IERC20 constant public fortubeRewardToken = IERC20(0x658A109C5900BC6d2357c87549B651670E5b0539); // FOR
     IForTubeReward constant public fortubeReward = IForTubeReward(0x55838F18e79cFd3EA22Eea08Bd3Ec18d67f314ed);
 
     IERC20 public _u;
@@ -73,7 +73,7 @@ contract ForTube is ERC20, IyToken {
         delta = fortubeReward.checkBalance(address(this));
         if (delta > 0) {
             fortubeReward.claimReward();
-            fortubeRewardToken.safeTransfer(feeTo, delta);
+            IERC20(fortubeReward.rewardToken()).safeTransfer(feeTo, delta);
         }
     }
 }

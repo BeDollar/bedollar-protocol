@@ -48,7 +48,7 @@ contract ForTube is ERC20, IyToken {
         _u.safeTransferFrom(msg.sender, address(this), _amount);
         _mint(msg.sender, _amount);
         pool = pool.add(_amount);
-        IForTubeBank(fortubeBank).deposit(address(_u), _u.balanceOf(address(this)));
+        depositAll();
     }
     function withdraw(uint _shares) override external {
         require(_shares > 0, "unstake shares must be greater than 0");
@@ -59,6 +59,10 @@ contract ForTube is ERC20, IyToken {
         _burn(msg.sender, _shares);
         _u.safeTransfer(msg.sender, _shares);
         pool = pool.sub(_shares);
+    }
+
+    function depositAll() public {
+        IForTubeBank(fortubeBank).deposit(address(_u), _u.balanceOf(address(this)));
     }
 
     function harvest() external {
@@ -75,5 +79,7 @@ contract ForTube is ERC20, IyToken {
             fortubeReward.claimReward();
             IERC20(fortubeReward.rewardToken()).safeTransfer(feeTo, delta);
         }
+
+        depositAll();
     }
 }

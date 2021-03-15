@@ -1,7 +1,8 @@
 const {
   basPools,
-  INITIAL_YSS_FOR_DAI_YSD,
-  INITIAL_YSS_FOR_DAI_YSS,
+  INITIAL_YSS_FOR_BUSD_YSD,
+  INITIAL_YSS_FOR_BUSD_YSS,
+  INITIAL_YSS_FOR_BUSD_Y3D
 } = require('./pools');
 
 // Pools
@@ -13,31 +14,36 @@ const InitialShareDistributor = artifacts.require('InitialShareDistributor');
 
 async function migration(deployer, network, accounts) {
   const unit = web3.utils.toBN(10 ** 18);
-  const totalBalanceForDAIYSD = unit.muln(INITIAL_YSS_FOR_DAI_YSD)
-  const totalBalanceForDAIYSS = unit.muln(INITIAL_YSS_FOR_DAI_YSS)
-  const totalBalance = totalBalanceForDAIYSD.add(totalBalanceForDAIYSS);
+  const totalBalanceForBUSDYSD = unit.muln(INITIAL_YSS_FOR_BUSD_YSD)
+  const totalBalanceForBUSDYSS = unit.muln(INITIAL_YSS_FOR_BUSD_YSS)
+  const totalBalanceForBUSDY3D = unit.muln(INITIAL_YSS_FOR_BUSD_Y3D)
+  const totalBalance = totalBalanceForBUSDYSD.add(totalBalanceForBUSDYSS).add(totalBalanceForBUSDY3D);
 
   const share = await Share.deployed();
 
-  const lpPoolDAIYSD = artifacts.require(basPools.BUSDYSD.contractName);
-  const lpPoolDAIYSS = artifacts.require(basPools.BUSDYSS.contractName);
+  const lpPoolBUSDYSD = artifacts.require(basPools.BUSDYSD.contractName);
+  const lpPoolBUSDYSS = artifacts.require(basPools.BUSDYSS.contractName);
+  const lpPoolBUSDY3D = artifacts.require(basPools.BUSDY3D.contractName);
 
   await deployer.deploy(
     InitialShareDistributor,
     share.address,
-    lpPoolDAIYSD.address,
-    totalBalanceForDAIYSD.toString(),
-    lpPoolDAIYSS.address,
-    totalBalanceForDAIYSS.toString(),
+    lpPoolBUSDYSD.address,
+    totalBalanceForBUSDYSD.toString(),
+    lpPoolBUSDYSS.address,
+    totalBalanceForBUSDYSS.toString(),
+    lpPoolBUSDY3D.address,
+    totalBalanceForBUSDY3D.toString(),
   );
   const distributor = await InitialShareDistributor.deployed();
 
   await share.mint(distributor.address, totalBalance.toString());
-  console.log(`Deposited ${INITIAL_YSS_FOR_DAI_YSD} YSS to InitialShareDistributor.`);
+  console.log(`Deposited ${INITIAL_YSS_FOR_BUSD_YSD} YSS to InitialShareDistributor.`);
 
   console.log(`Setting distributor to InitialShareDistributor (${distributor.address})`);
-  await lpPoolDAIYSD.deployed().then(pool => pool.setRewardDistribution(distributor.address));
-  await lpPoolDAIYSS.deployed().then(pool => pool.setRewardDistribution(distributor.address));
+  await lpPoolBUSDYSD.deployed().then(pool => pool.setRewardDistribution(distributor.address));
+  await lpPoolBUSDYSS.deployed().then(pool => pool.setRewardDistribution(distributor.address));
+  await lpPoolBUSDY3D.deployed().then(pool => pool.setRewardDistribution(distributor.address));
 
   await distributor.distribute();
 }

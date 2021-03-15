@@ -8,6 +8,7 @@ const SimpleERCFund = artifacts.require('SimpleERCFund');
 const Share = artifacts.require('Share');
 const IERC20 = artifacts.require('IERC20');
 const MockDai = artifacts.require('MockDai');
+const MockY3d = artifacts.require('MockY3d');
 
 const SeigniorageOracle = artifacts.require('SeigniorageOracle');
 const BondOracle = artifacts.require('BondOracle');
@@ -51,17 +52,21 @@ async function migration(deployer, network, accounts) {
   const share = await Share.deployed();
 
   console.log('Approving Uniswap on tokens for liquidity');
+  const y3dToken = knownContracts.Y3D[network] ? await IERC20.at(knownContracts.Y3D[network]) : await MockY3d.deployed();
+
   await Promise.all([
     approveIfNot(cash, accounts[0], uniswapRouter.address, max),
     approveIfNot(share, accounts[0], uniswapRouter.address, max),
     approveIfNot(busd, accounts[0], uniswapRouter.address, max),
+    approveIfNot(y3dToken, accounts[0], uniswapRouter.address, max),
   ]);
 
   // WARNING: msg.sender must hold enough DAI to add liquidity to YSD-DAI & YSS-DAI pools
   // otherwise transaction will revert
   console.log('Adding liquidity to pools');
-  const [BUSD_YSD_PAIR, BUSD_YSS_PAIR ] = await Promise.all([
+  const [BUSD_YSD_PAIR, BUSD_Y3D_PAIR, BUSD_YSS_PAIR ] = await Promise.all([
     uniswap.getPair(busd.address, cash.address),
+    uniswap.getPair(busd.address, y3dToken.address),
     uniswap.getPair(busd.address, share.address)
   ])
   if (BUSD_YSD_PAIR === '0x0000000000000000000000000000000000000000') {
@@ -78,8 +83,16 @@ async function migration(deployer, network, accounts) {
     );
   }
 
+  if (BUSD_Y3D_PAIR === '0x0000000000000000000000000000000000000000') {
+    console.log('Deploying BUSD_Y3D_PAIR');
+    await uniswapRouter.addLiquidity(
+      y3dToken.address, busd.address, unit, unit, unit, unit, accounts[0],  deadline(),
+    );
+  }
+
   console.log(`BUSD-YSD pair address: ${await uniswap.getPair(busd.address, cash.address)}`);
   console.log(`BUSD-YSS pair address: ${await uniswap.getPair(busd.address, share.address)}`);
+  console.log(`BUSD_Y3D_PAIR pair address: ${await uniswap.getPair(busd.address, y3dToken.address)}`);
 
   // Deploy boardroom
   await deployer.deploy(Boardroom, cash.address, share.address);

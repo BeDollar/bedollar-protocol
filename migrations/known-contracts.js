@@ -28,6 +28,9 @@ module.exports = {
     bsc_mainnet: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
     bsc_testnet: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee'
   },
+  Y3D: {
+    bsc_mainnet: '0x12e2fcfA079Fc23aE82Ab82707b402410321103f',
+  },
   SUSD: {
     mainnet: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',
   },

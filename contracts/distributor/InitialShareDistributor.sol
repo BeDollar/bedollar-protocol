@@ -14,23 +14,30 @@ contract InitialShareDistributor is IDistributor {
     bool public once = true;
 
     IERC20 public share;
-    IRewardDistributionRecipient public daibacLPPool;
-    uint256 public daibacInitialBalance;
-    IRewardDistributionRecipient public daibasLPPool;
-    uint256 public daibasInitialBalance;
+    IRewardDistributionRecipient public busdysdLPPool;
+    uint256 public busdysdInitialBalance;
+    IRewardDistributionRecipient public busdyssLPPool;
+    uint256 public busdyssInitialBalance;
+    IRewardDistributionRecipient public busdy3dLPPool;
+    uint256 public busdy3dInitialBalance;
 
     constructor(
         IERC20 _share,
-        IRewardDistributionRecipient _daibacLPPool,
-        uint256 _daibacInitialBalance,
-        IRewardDistributionRecipient _daibasLPPool,
-        uint256 _daibasInitialBalance
+        IRewardDistributionRecipient _busdysdLPPool,
+        uint256 _busdysdInitialBalance,
+        IRewardDistributionRecipient _busdyssLPPool,
+        uint256 _busdyssInitialBalance,
+        IRewardDistributionRecipient _busdy3dLPPool,
+        uint256 _busdy3dInitialBalance
     ) public {
         share = _share;
-        daibacLPPool = _daibacLPPool;
-        daibacInitialBalance = _daibacInitialBalance;
-        daibasLPPool = _daibasLPPool;
-        daibasInitialBalance = _daibasInitialBalance;
+        busdysdLPPool = _busdysdLPPool;
+        busdysdInitialBalance = _busdysdInitialBalance;
+        busdyssLPPool = _busdyssLPPool;
+        busdyssInitialBalance = _busdyssInitialBalance;
+        // new
+        busdy3dLPPool = _busdy3dLPPool;
+        busdy3dInitialBalance = _busdy3dInitialBalance;
     }
 
     function distribute() public override {
@@ -39,13 +46,17 @@ contract InitialShareDistributor is IDistributor {
             'InitialShareDistributor: you cannot run this function twice'
         );
 
-        share.transfer(address(daibacLPPool), daibacInitialBalance);
-        daibacLPPool.notifyRewardAmount(daibacInitialBalance);
-        emit Distributed(address(daibacLPPool), daibacInitialBalance);
+        share.transfer(address(busdysdLPPool), busdysdInitialBalance);
+        busdysdLPPool.notifyRewardAmount(busdysdInitialBalance);
+        emit Distributed(address(busdysdLPPool), busdysdInitialBalance);
 
-        share.transfer(address(daibasLPPool), daibasInitialBalance);
-        daibasLPPool.notifyRewardAmount(daibasInitialBalance);
-        emit Distributed(address(daibasLPPool), daibasInitialBalance);
+        share.transfer(address(busdyssLPPool), busdyssInitialBalance);
+        busdyssLPPool.notifyRewardAmount(busdyssInitialBalance);
+        emit Distributed(address(busdyssLPPool), busdyssInitialBalance);
+
+        share.transfer(address(busdy3dLPPool), busdy3dInitialBalance);
+        busdyssLPPool.notifyRewardAmount(busdy3dInitialBalance);
+        emit Distributed(address(busdy3dLPPool), busdy3dInitialBalance);
 
         once = false;
     }

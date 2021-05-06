@@ -18,7 +18,9 @@
     "deploy:bsc_testnet": "truffle migrate --network bsc_testnet",
     "deploy:bsc_mainnet": "truffle migrate --network bsc_mainnet",
     "verify:bsc_testnet": "truffle run verify --network bsc_testnet",
-    "verify:bsc_mainnet": "truffle run verify --network bsc_mainnet"
+    "verify:bsc_mainnet": "truffle run verify --network bsc_mainnet",
+    "deploy:hoo_testnet": "truffle migrate --network hoo_testnet",
+    "deploy:hoo_mainnet": "truffle migrate --network hoo_mainnet"
   },
   "devDependencies": {
     "@ethersproject/address": "^5.0.0-beta",

@@ -66,6 +66,16 @@ module.exports = {
       network_id: 256,
       gas: 8000000,
     },
+    hoo_mainnet: {
+      provider: () => new HDWalletProvider(mnemonic, 'https://http-mainnet.hoosmartchain.com'),
+      network_id: 70,
+      gas: 8000000,
+    },
+    hoo_testnet: {
+      provider: () => new HDWalletProvider(mnemonic, 'https://http-testnet.hoosmartchain.com'),
+      network_id: 170,
+      gas: 8000000,
+    },
     heco_mainnet: {
       provider: () => new HDWalletProvider(mnemonic, 'https://http-mainnet.hecochain.com'),
       gas: 8000000,

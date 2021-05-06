@@ -23,7 +23,7 @@ async function migration(deployer, network, accounts) {
 
   const lpPoolBUSDYSD = artifacts.require(basPools.BUSDYSD.contractName);
   const lpPoolBUSDYSS = artifacts.require(basPools.BUSDYSS.contractName);
-  const lpPoolBUSDY3D = artifacts.require(basPools.BUSDY3D.contractName);
+  // const lpPoolBUSDY3D = artifacts.require(basPools.BUSDY3D.contractName);
 
   await deployer.deploy(
     InitialShareDistributor,
@@ -32,8 +32,8 @@ async function migration(deployer, network, accounts) {
     totalBalanceForBUSDYSD.toString(),
     lpPoolBUSDYSS.address,
     totalBalanceForBUSDYSS.toString(),
-    lpPoolBUSDY3D.address,
-    totalBalanceForBUSDY3D.toString(),
+    // lpPoolBUSDY3D.address,
+    // totalBalanceForBUSDY3D.toString(),
   );
   const distributor = await InitialShareDistributor.deployed();
 
@@ -43,7 +43,7 @@ async function migration(deployer, network, accounts) {
   console.log(`Setting distributor to InitialShareDistributor (${distributor.address})`);
   await lpPoolBUSDYSD.deployed().then(pool => pool.setRewardDistribution(distributor.address));
   await lpPoolBUSDYSS.deployed().then(pool => pool.setRewardDistribution(distributor.address));
-  await lpPoolBUSDY3D.deployed().then(pool => pool.setRewardDistribution(distributor.address));
+  // await lpPoolBUSDY3D.deployed().then(pool => pool.setRewardDistribution(distributor.address));
 
   await distributor.distribute();
 }

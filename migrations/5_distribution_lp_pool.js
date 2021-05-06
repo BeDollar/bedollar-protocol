@@ -18,22 +18,22 @@ module.exports = async (deployer, network, accounts) => {
   const uniswapFactory = ['dev'].includes(network)
     ? await UniswapV2Factory.deployed()
     : await UniswapV2Factory.at(knownContracts.UniswapV2Factory[network]);
-  const targetedStableCoin = knownContracts.BUSD[network]
-    ? await IERC20.at(knownContracts.BUSD[network])
+  const targetedStableCoin = knownContracts.USDT[network]
+    ? await IERC20.at(knownContracts.USDT[network])
     : await MockDai.deployed();
-  const Y3D = knownContracts.Y3D[network]
-    ? await IERC20.at(knownContracts.Y3D[network])
-    : await MockY3d.deployed();
+  // const Y3D = knownContracts.Y3D[network]
+  //   ? await IERC20.at(knownContracts.Y3D[network])
+  //   : await MockY3d.deployed();
   // const oracle = await Oracle.deployed();
 
   // @XXX: remember to switch codehash for Oracle if you switch swap/network
   const [busd_ysd_lpt, busd_yss_lpt, busd_y3d_lpt] = await Promise.all([
     uniswapFactory.getPair(Cash.address, targetedStableCoin.address),
     uniswapFactory.getPair(Share.address, targetedStableCoin.address),
-    uniswapFactory.getPair(targetedStableCoin.address, Y3D.address)
+    // uniswapFactory.getPair(targetedStableCoin.address, Y3D.address)
   ])
 
   await deployer.deploy(BUSDYSDLPToken_YSSPool, Share.address, busd_ysd_lpt, POOL_START_DATE);
   await deployer.deploy(BUSDYSSLPToken_YSSPool, Share.address, busd_yss_lpt, POOL_START_DATE);
-  await deployer.deploy(BUSDY3DLPToken_YSSPool, Share.address, busd_y3d_lpt, POOL_START_DATE);
+  // await deployer.deploy(BUSDY3DLPToken_YSSPool, Share.address, busd_y3d_lpt, POOL_START_DATE);
 };

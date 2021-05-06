@@ -27,14 +27,14 @@ async function deployToken(deployer, network, accounts) {
   await deployer.deploy(Share);
   await deployer.deploy(SimpleERCFund)
 
-  if (!knownContracts.BUSD[network]) {
+  if (!knownContracts.USDT[network]) {
     const dai = await deployer.deploy(MockDai);
     console.log(`MockDAI address: ${dai.address}`);
   }
 
-  if (!knownContracts.Y3D[network]) {
-    const my3d = await deployer.deploy(MockY3d);
-    console.log(`Mock Y3D address: ${my3d.address}`);
-  }
+  // if (!knownContracts.Y3D[network]) {
+  //   const my3d = await deployer.deploy(MockY3d);
+  //   console.log(`Mock Y3D address: ${my3d.address}`);
+  // }
 
 }

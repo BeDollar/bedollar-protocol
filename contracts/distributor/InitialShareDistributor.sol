@@ -18,17 +18,17 @@ contract InitialShareDistributor is IDistributor {
     uint256 public busdysdInitialBalance;
     IRewardDistributionRecipient public busdyssLPPool;
     uint256 public busdyssInitialBalance;
-    IRewardDistributionRecipient public busdy3dLPPool;
-    uint256 public busdy3dInitialBalance;
+    // IRewardDistributionRecipient public busdy3dLPPool;
+    // uint256 public busdy3dInitialBalance;
 
     constructor(
         IERC20 _share,
         IRewardDistributionRecipient _busdysdLPPool,
         uint256 _busdysdInitialBalance,
         IRewardDistributionRecipient _busdyssLPPool,
-        uint256 _busdyssInitialBalance,
-        IRewardDistributionRecipient _busdy3dLPPool,
-        uint256 _busdy3dInitialBalance
+        uint256 _busdyssInitialBalance
+        // IRewardDistributionRecipient _busdy3dLPPool,
+        // uint256 _busdy3dInitialBalance
     ) public {
         share = _share;
         busdysdLPPool = _busdysdLPPool;
@@ -36,8 +36,8 @@ contract InitialShareDistributor is IDistributor {
         busdyssLPPool = _busdyssLPPool;
         busdyssInitialBalance = _busdyssInitialBalance;
         // new
-        busdy3dLPPool = _busdy3dLPPool;
-        busdy3dInitialBalance = _busdy3dInitialBalance;
+        // busdy3dLPPool = _busdy3dLPPool;
+        // busdy3dInitialBalance = _busdy3dInitialBalance;
     }
 
     function distribute() public override {
@@ -54,9 +54,9 @@ contract InitialShareDistributor is IDistributor {
         busdyssLPPool.notifyRewardAmount(busdyssInitialBalance);
         emit Distributed(address(busdyssLPPool), busdyssInitialBalance);
 
-        share.transfer(address(busdy3dLPPool), busdy3dInitialBalance);
-        busdyssLPPool.notifyRewardAmount(busdy3dInitialBalance);
-        emit Distributed(address(busdy3dLPPool), busdy3dInitialBalance);
+        // share.transfer(address(busdy3dLPPool), busdy3dInitialBalance);
+        // busdyssLPPool.notifyRewardAmount(busdy3dInitialBalance);
+        // emit Distributed(address(busdy3dLPPool), busdy3dInitialBalance);
 
         once = false;
     }

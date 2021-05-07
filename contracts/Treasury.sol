@@ -72,7 +72,7 @@ contract Treasury is ContractGuard, Epoch {
         boardroom = _boardroom;
         fund = _fund;
 
-        cashPriceOne = 10**18;
+        cashPriceOne = 10**6; // @XXX: pegged to USDT, which the decimals is 6 
         cashPriceCeiling = uint256(105).mul(cashPriceOne).div(10**2);
 
         bondDepletionFloor = uint256(1000).mul(cashPriceOne);

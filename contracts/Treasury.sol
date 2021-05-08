@@ -195,7 +195,8 @@ contract Treasury is ContractGuard, Epoch {
         uint256 bondPrice = cashPrice;
 
         IBasisAsset(cash).burnFrom(msg.sender, amount);
-        IBasisAsset(bond).mint(msg.sender, amount.mul(1e18).div(bondPrice));
+        // @XXX: 1e6 is fix for USDT/USDC (which the decimals are 6)
+        IBasisAsset(bond).mint(msg.sender, amount.mul(1e6).div(bondPrice));
         _updateCashPrice();
 
         emit BoughtBonds(msg.sender, amount);

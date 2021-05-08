@@ -7,6 +7,12 @@ const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const TreasuryContract = new ethers.Contract(Treasury.address, Treasury.abi, wallet);
 
 async function main() {
+    const initialized = await TreasuryContract.functions.initialized();
+    if (!initialized) {
+      console.info("Init Treasury")
+      const initReq = await TreasuryContract.functions.initialize();
+      await initReq.wait(2);
+    }
     const request = await TreasuryContract.functions.allocateSeigniorage();
     return request.wait(1);
 }

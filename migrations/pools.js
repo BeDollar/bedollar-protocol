@@ -4,7 +4,7 @@ const INITIAL_YSS_FOR_BUSD_YSD = 750000;
 const INITIAL_YSS_FOR_BUSD_YSS = 250000;
 const INITIAL_YSS_FOR_BUSD_Y3D = 250000;
 
-const POOL_START_DATE = Date.parse('2021-02-28T12:00:00Z') / 1000;
+const POOL_START_DATE = Date.parse('2021-05-09T00:00:00Z') / 1000;
 
 // const bacPools = [
 //   { contractName: 'YSDDAIPool', token: 'DAI' },

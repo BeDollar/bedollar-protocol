@@ -21,8 +21,8 @@ const UniswapV2Router02 = artifacts.require('UniswapV2Router02');
 const DAY = 86400;
 const HOUR = 3600;
 
-const BOND_START_DATE = POOL_START_DATE + DAY
-const TREASURY_START_DATE = POOL_START_DATE + (2 * DAY)
+const BOND_START_DATE = POOL_START_DATE
+const TREASURY_START_DATE = POOL_START_DATE + (0.5 * DAY)
 
 async function migration(deployer, network, accounts) {
   let uniswap, uniswapRouter;

@@ -10,7 +10,7 @@ module.exports = {
     heco_mainnet: '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470',
     heco_testnet: '0x32CE36F6eA8d97f9fC19Aab83b9c6D2F52D74470',
     // @todo: fill hoo mainnet
-    hoo_mainnet: '0x0',
+    hoo_mainnet: '0xff3529FeAe7E8CC9Ca7dB9DAB9719512E823135c',
     hoo_testnet: '0xff3529FeAe7E8CC9Ca7dB9DAB9719512E823135c',
   },
   UniswapV2Router02: {
@@ -21,9 +21,8 @@ module.exports = {
     bsc_testnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
     heco_mainnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
     heco_testnet: '0x039b5818e51dfec86c1d56a4668787af0ed1c068',
-    // @todo: fill hoo mainnet
-    hoo_mainnet: '0x0',
-    hoo_testnet: '0x3315c992bDa9DEBCFB94e345dF14E0cafd5b7AE2',
+    hoo_mainnet: '0x8D313dcA645d03F598eb594EF82897B6e4d01e9A',
+    hoo_testnet: '0x8D313dcA645d03F598eb594EF82897B6e4d01e9A',
   },
   DAI: {
     mainnet: '0x6b175474e89094c44da98b954eedeac495271d0f', // ETH DAI
